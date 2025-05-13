@@ -1,3 +1,16 @@
+This repository builds upon the work of Jae-hee So et al., originally developed for the study *[Aligning Large Language Models for Enhancing Psychiatric Interviews through Symptom Delineation and Summarization : Pilot Study](https://formative.jmir.org/2024/1/e58418/)* 
+
+We are currently using this codebase as the foundation for our work on evaluating the reliability of LLMs in clinical symptom extraction and psychiatric diagnosis. 
+
+Contributions (ongoing)
+The following changes and extensions have been made as part of our research:
+- Adapted the prompts for German-language transcripts
+- ...
+
+All original credit remains with the authors of the initial implementation (see below for their full README).
+
+--
+
 # Aligning Large Language Models for Enhancing Psychiatric Interviews through Symptom Delineation and Summarization : Pilot Study
 
 Jae-hee So, Joonhwan Chang, Eunji Kim, Junho Na, JiYeon Choi, Jy-yong Sohn, Byung-Hoon Kim, Sang Hui Chu

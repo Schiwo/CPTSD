@@ -85,12 +85,12 @@ def extract_symp_from_df_label(df, source_column, target_column):
 # rag_symp_rag result
 def extract_symp_from_df_rag(df, source_column, target_column):
     def extract_symptoms(data_string):
-        if "증상 :" in data_string or "- 증상:" in data_string:
-            # 증상 부분 추출
+        if "Symptom :" in data_string or "- Symptom:" in data_string:
+            # Extract partial symptom
             parts = (
-                data_string.split("증상 :")
-                if "증상 :" in data_string
-                else data_string.split("- 증상:")
+                data_string.split("Symptom :")
+                if "Symptom :" in data_string
+                else data_string.split("- Symptom:")
             )
             if len(parts) > 1:
                 symptoms_part = parts[1].split("\n")[0].split("-")[0].strip()
@@ -546,3 +546,53 @@ def mid_token_dist_calc(input_file_path, output_file_path):
 
     # Save the updated dataframe to a new Excel file
     df.to_excel(output_file_path, index=False)
+
+
+def jaccard_index_sections(list1, list2):
+    """
+    Computes the Jaccard Index between ground-truth and estimated sections.
+
+    Args:
+        list1 (list): Ground-truth sections
+        list2 (list): Estimated sections
+
+    Returns:
+        float: Jaccard Index (0.0 to 1.0)
+    """
+    try:
+        sections1 = set(s.strip().lower() for s in list1 if s)
+        sections2 = set(s.strip().lower() for s in list2 if s)
+    except Exception:
+        return 0.0
+
+    intersection = sections1 & sections2
+    union = sections1 | sections2
+
+    if not union:
+        return 0.0
+    return len(intersection) / len(union)
+
+
+def compute_section_jaccard(
+    df,
+    section_col="Section",
+    estimated_col="Estimated Section",
+    output_col="Jaccard Index",
+):
+    """
+    Computes the Jaccard Index for each row between two section columns
+    and stores the result in a new column.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame
+        section_col (str): Column name with ground-truth sections
+        estimated_col (str): Column name with estimated sections
+        output_col (str): Name of the new column to store Jaccard scores
+
+    Returns:
+        pd.DataFrame: Updated DataFrame with Jaccard Index column
+    """
+    df[output_col] = df.apply(
+        lambda row: jaccard_index_sections(row[section_col], row[estimated_col]), axis=1
+    )
+    return df

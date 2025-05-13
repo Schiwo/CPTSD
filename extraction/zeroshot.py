@@ -8,7 +8,7 @@ import argparse
 import json
 
 from openai import OpenAI
-from prompts_zeroshot import zeroshot_short_en_1
+from extraction.prompts.prompts_zeroshot import zeroshot_short_en_1
 from utils import extract_split_and_deduplicate_symptoms
 from utils import calculate_num_set
 from utils import calculate_and_average_metrics
@@ -86,6 +86,14 @@ calculate_and_average_metrics(num_set_extract_symp2, zeroshot_metric_symp)
 
 # extract ground-truth sections and estimated sections
 extract_sec = extract_sections(gpt_result)
+
+# compute Jaccard Index for section prediction
+extract_sec = compute_section_jaccard(extract_sec)
+mean_jaccard = extract_sec["Jaccard Index"].mean()
+print(f"Mean Jaccard Index between sections: {mean_jaccard:.3f}")
+
+# save updated file with Jaccard column
+extract_sec.to_excel(f"{gpt_result_filename}_with_jaccard.xlsx", index=False)
 
 # tokenize the text of ground-truth sections and estimated sections and number tokens of the text
 tokenize_numbering(extract_sec, token_num_sec)
