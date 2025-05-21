@@ -8,7 +8,7 @@ import argparse
 import json
 
 from openai import OpenAI
-from extraction.prompts.prompts_zeroshot import zeroshot_short_en_1
+from prompts.prompts_zeroshot import zeroshot_short_en_1
 from utils import extract_split_and_deduplicate_symptoms
 from utils import calculate_num_set
 from utils import calculate_and_average_metrics
@@ -62,7 +62,7 @@ def zeroshot(df):
                 df.loc[idx, "Estimation"] = "Error"
 
         # Save the dataframe to a new excel file
-        df.to_excel(f"{result_filename}.xlsx", index=False)
+        df.to_excel(f"{gpt_result_filename}.xlsx", index=False)
     else:
         print("No 'Statement' or 'Symptom' column found in the data.")
 
