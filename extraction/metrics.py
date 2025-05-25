@@ -95,4 +95,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    compute_metrics(args.result)
+    compute_metrics_zeroshot(args.result)

@@ -32,6 +32,7 @@ def extract_split_and_deduplicate_symptoms(df, source_column, target_column):
     for index, row in df.iterrows():
         # Parse the JSON-like string in the source column
         try:
+            # TODO: fix the symptom parsing function for new format
             data = json.loads(row[source_column].replace("'", '"'))
         except json.JSONDecodeError:
             # In case of a decoding error, add a placeholder
@@ -49,6 +50,7 @@ def extract_split_and_deduplicate_symptoms(df, source_column, target_column):
 
     # Add the extracted symptoms to the dataframe in the target column
     df[target_column] = extracted_symptoms
+    return df
 
 
 # symp_ground-truth label
@@ -288,6 +290,7 @@ def extract_sections(df):
     # Function to extract section values
     def extract_section(column):
         sections = []
+        # TODO: fix the section parsing function for new format
         for item in eval(column):
             # Add an empty string if 'section' is 'none', otherwise add the 'section' value
             if item.get("section", "") == "none":
