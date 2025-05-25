@@ -1,22 +1,7 @@
 import openai
-import openpyxl
 import pandas as pd
 import argparse
 from extraction.prompts.prompts_icl import icl_short_en_1
-import time
-import json
-import re
-
-from openai import OpenAI
-from utils import extract_symp_from_df_label
-from utils import extract_symp_from_df_icl
-from utils import calculate_num_set
-from utils import calculate_and_average_metrics
-from utils import extract_sections
-from utils import tokenize_numbering
-from utils import mid_token_calc
-from utils import mid_token_dist_calc
-from utils import compute_section_jaccard
 
 parser = argparse.ArgumentParser(
     description="Estimate Symptom and Section with In-Context Learning method"
@@ -92,36 +77,3 @@ def icl(df1, df2):
 data = pd.read_excel(f"{data_filename}.xlsx")
 examplar = pd.read_excel(f"{examplar_file}.xlsx")
 icl(examplar, data)
-
-# extract ground-truth symptoms
-gpt_result = pd.read_excel(f"{gpt_result_filename}.xlsx")
-extract_symp1 = extract_symp_from_df_label(gpt_result, "Ground-truth label", "Symptom")
-
-# extract estimated symptoms
-extract_symp2 = extract_symp_from_df_icl(
-    extract_symp1, "Estimation", "Estimated Symptom"
-)
-
-# calcuate metrics used for multi-label classification in estimating symptoms
-num_set_extract_symp2 = calculate_num_set(extract_symp2)
-calculate_and_average_metrics(num_set_extract_symp2, icl_metric_symp)
-
-# extract ground-truth sections and estimated sections
-extract_sec = extract_sections(gpt_result)
-
-# compute Jaccard Index for section prediction
-extract_sec = compute_section_jaccard(extract_sec)
-mean_jaccard = extract_sec["Jaccard Index"].mean()
-print(f"Mean Jaccard Index between sections: {mean_jaccard:.3f}")
-
-# save updated file with Jaccard column
-extract_sec.to_excel(f"{gpt_result_filename}_with_jaccard.xlsx", index=False)
-
-# tokenize the text of ground-truth sections and estimated sections and number tokens of the text
-tokenize_numbering(extract_sec, token_num_sec)
-
-# calculate the mid-token of the ground-truth sections and estimated sections
-mid_token_calc(token_num_sec, mid_token_calc_sec)
-
-# calculate the recall mid-token distance
-mid_token_dist_calc(mid_token_calc_sec, icl_midtoken)

@@ -12,6 +12,7 @@ from utils import (
     mid_token_dist_calc,
     extract_symp_from_df_label,
     extract_symp_from_df_rag,
+    extract_symp_from_df_icl,
 )
 
 
@@ -40,6 +41,22 @@ def compute_metrics_rag(gpt_result_filename):
     extract_symp2 = extract_symp_from_df_rag(
         extract_symp1, "Estimation", "Estimated Symptom"
     )
+    compute_metrics(extract_symp2)
+
+
+def compute_metrics_icl(gpt_result_filename):
+
+    # extract ground-truth symptoms
+    gpt_result = pd.read_excel(f"{gpt_result_filename}.xlsx")
+    extract_symp1 = extract_symp_from_df_label(
+        gpt_result, "Ground-truth label", "Symptom"
+    )
+
+    # extract estimated symptoms
+    extract_symp2 = extract_symp_from_df_icl(
+        extract_symp1, "Estimation", "Estimated Symptom"
+    )
+    compute_metrics(extract_symp2)
 
 
 def compute_metrics(extract_symp2):
