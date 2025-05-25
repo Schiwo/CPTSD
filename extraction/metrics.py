@@ -10,6 +10,8 @@ from utils import (
     tokenize_numbering,
     mid_token_calc,
     mid_token_dist_calc,
+    extract_symp_from_df_label,
+    extract_symp_from_df_rag,
 )
 
 
@@ -26,11 +28,25 @@ def compute_metrics_zeroshot(gpt_result_filename):
     compute_metrics(extract_symp2)
 
 
+def compute_metrics_rag(gpt_result_filename):
+
+    # extract ground-truth symptoms
+    gpt_result = pd.read_excel(f"{gpt_result_filename}.xlsx")
+    extract_symp1 = extract_symp_from_df_label(
+        gpt_result, "Ground-truth label", "Symptom"
+    )
+
+    # extract estimated symptoms
+    extract_symp2 = extract_symp_from_df_rag(
+        extract_symp1, "Estimation", "Estimated Symptom"
+    )
+
+
 def compute_metrics(extract_symp2):
 
-    # calcuate metrics used for multi-label classification in estimating symptoms
+    # calculate metrics used for multi-label classification in estimating symptoms
     num_set_extract_symp2 = calculate_num_set(extract_symp2)
-    calculate_and_average_metrics(num_set_extract_symp2, zeroshot_metric_symp)
+    calculate_and_average_metrics(num_set_extract_symp2, metric_symp)
 
     # extract ground-truth sections and estimated sections
     extract_sec = extract_sections(gpt_result)
@@ -50,7 +66,7 @@ def compute_metrics(extract_symp2):
     mid_token_calc(token_num_sec, mid_token_calc_sec)
 
     # calculate the recall mid-token distance
-    mid_token_dist_calc(mid_token_calc_sec, zeroshot_midtoken)
+    mid_token_dist_calc(mid_token_calc_sec, midtoken)
 
 
 if __name__ == "__main__":
