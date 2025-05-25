@@ -10,6 +10,10 @@ from itertools import chain
 from ast import literal_eval
 import os
 import time
+import pandas as pd
+import re
+from itertools import chain
+from ast import literal_eval
 
 
 # zeroshot_symp
@@ -299,18 +303,11 @@ def extract_sections(df):
     return df
 
 
-def tokenize_numbering(input_file_path, output_file_path):
+def tokenize_numbering(df):
     """
     Process the given Excel file by tokenizing and assigning token numbers to 'Statement',
     'Section', and 'Estimated Section' columns, and export the processed data to a new Excel file.
-
-    :param input_file_path: Path to the input Excel file.
-    :param output_file_path: Path to the output Excel file.
     """
-    import pandas as pd
-    import re
-    from itertools import chain
-    from ast import literal_eval
 
     def tokenize(text):
         # Tokenize the text into 3-word phrases, ignoring punctuation and sentence boundaries.
@@ -360,9 +357,6 @@ def tokenize_numbering(input_file_path, output_file_path):
 
         return tokenized_column
 
-    # Load the Excel file
-    df = pd.read_excel(input_file_path)
-
     # Tokenize 'Statement' and assign token numbers
     df["Tokenized Statement with Numbers"] = df["Statement"].apply(
         tokenize_and_assign_numbers
@@ -383,13 +377,10 @@ def tokenize_numbering(input_file_path, output_file_path):
         )
     )
 
-    # Export to a new Excel file
-    df.to_excel(output_file_path, index=False)
-
-    return "Processing and export completed."
+    return df
 
 
-def mid_token_calc(input_file_path, output_file_path):
+def mid_token_calc(df):
     """
     Process the Excel file to calculate mid-tokens for the specified columns.
     Input and output are both Excel files.
@@ -419,28 +410,19 @@ def mid_token_calc(input_file_path, output_file_path):
             mid_tokens.append(mid_tokens_list)
         return mid_tokens
 
-    # Load the Excel file
-    df = pd.read_excel(input_file_path)
-
     # Calculate mid-tokens for the specified columns
     df["Mid-Token Section"] = calculate_mid_tokens(df["Tokenized Section with Numbers"])
     df["Mid-Token Estimated Section"] = calculate_mid_tokens(
         df["Tokenized Estimated Section with Numbers"]
     )
-
-    # Save the updated dataframe to a new Excel file
-    df.to_excel(output_file_path, index=False)
+    return df
 
 
-def mid_token_dist_calc(input_file_path, output_file_path):
+def mid_token_dist_calc(df):
     """
     Process the Excel file to find the closest values in 'Mid-Token Estimated Section' for each element
     in 'Mid-Token Section', calculate the average difference, and compute the recall mid-token distance.
     Save the results to new columns in the Excel file.
-
-    Args:
-    input_file_path (str): Path to the input Excel file.
-    output_file_path (str): Path to save the output Excel file.
     """
     import pandas as pd
     import ast
@@ -527,9 +509,6 @@ def mid_token_dist_calc(input_file_path, output_file_path):
         df["Recall Mid-Token Distance"] = df.apply(calculate_distance, axis=1)
         return df
 
-    # Load the Excel file
-    df = pd.read_excel(input_file_path)
-
     # Add new columns for the closest mid-token and average differences
     df["Closest Mid-Token Estimated Section"] = find_closest_values(
         df["Mid-Token Section"].apply(ast.literal_eval),
@@ -542,10 +521,7 @@ def mid_token_dist_calc(input_file_path, output_file_path):
     )
 
     # Calculate and add the recall mid-token distance column
-    df = calculate_recall_mid_token_distance(df)
-
-    # Save the updated dataframe to a new Excel file
-    df.to_excel(output_file_path, index=False)
+    return calculate_recall_mid_token_distance(df)
 
 
 def jaccard_index_sections(list1, list2):

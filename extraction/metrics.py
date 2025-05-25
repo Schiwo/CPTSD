@@ -26,7 +26,7 @@ def compute_metrics_zeroshot(gpt_result_filename):
     extract_symp2 = extract_split_and_deduplicate_symptoms(
         extract_symp1, "Estimation", "Estimated Symptom"
     )
-    compute_metrics(extract_symp2)
+    compute_metrics(gpt_result, extract_symp2, gpt_result_filename)
 
 
 def compute_metrics_rag(gpt_result_filename):
@@ -41,7 +41,7 @@ def compute_metrics_rag(gpt_result_filename):
     extract_symp2 = extract_symp_from_df_rag(
         extract_symp1, "Estimation", "Estimated Symptom"
     )
-    compute_metrics(extract_symp2)
+    compute_metrics(gpt_result, extract_symp2, gpt_result_filename)
 
 
 def compute_metrics_icl(gpt_result_filename):
@@ -56,34 +56,33 @@ def compute_metrics_icl(gpt_result_filename):
     extract_symp2 = extract_symp_from_df_icl(
         extract_symp1, "Estimation", "Estimated Symptom"
     )
-    compute_metrics(extract_symp2)
+    compute_metrics(gpt_result, extract_symp2, gpt_result_filename)
 
 
-def compute_metrics(extract_symp2):
+def compute_metrics(gpt_result, extract_symp2, gpt_result_filename):
 
     # calculate metrics used for multi-label classification in estimating symptoms
     num_set_extract_symp2 = calculate_num_set(extract_symp2)
-    calculate_and_average_metrics(num_set_extract_symp2, metric_symp)
+    calculate_and_average_metrics(
+        num_set_extract_symp2, f"{gpt_result_filename}_avg_metrics.xlsx"
+    )
 
     # extract ground-truth sections and estimated sections
     extract_sec = extract_sections(gpt_result)
 
     # compute Jaccard Index for section prediction
-    extract_sec = compute_section_jaccard(extract_sec)
-    mean_jaccard = extract_sec["Jaccard Index"].mean()
-    print(f"Mean Jaccard Index between sections: {mean_jaccard:.3f}")
-
-    # save updated file with Jaccard column
-    extract_sec.to_excel(f"{gpt_result_filename}_with_jaccard.xlsx", index=False)
+    jaccard = compute_section_jaccard(extract_sec)
 
     # tokenize the text of ground-truth sections and estimated sections and number tokens of the text
-    tokenize_numbering(extract_sec, token_num_sec)
+    token_num_sec = tokenize_numbering(jaccard)
 
     # calculate the mid-token of the ground-truth sections and estimated sections
-    mid_token_calc(token_num_sec, mid_token_calc_sec)
+    mid_token_calc_sec = mid_token_calc(token_num_sec)
 
     # calculate the recall mid-token distance
-    mid_token_dist_calc(mid_token_calc_sec, midtoken)
+    midtoken = mid_token_dist_calc(mid_token_calc_sec)
+
+    midtoken.to_excel(f"{gpt_result_filename}_with_metrics.xlsx", index=False)
 
 
 if __name__ == "__main__":
