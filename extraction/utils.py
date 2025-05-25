@@ -274,12 +274,12 @@ def calculate_and_average_metrics(input_file, output_file):
 # extracting sections
 def extract_sections(df):
     """
-    Processes the dataframe by removing rows where 'Ground-truth label' contains 'none',
+    Processes the dataframe by removing rows where 'Ground-truth label' is NaN,
     extracting the 'section' part from both 'Ground-truth label' and 'Estimation' columns,
     and adding these as new columns 'Section' and 'Estimated Section'.
     """
     # Remove rows where 'Ground-truth label' contains 'none'
-    df = df[df["Ground-truth label"].apply(lambda x: "none" not in x)]
+    df = df[~df["Ground-truth label"].isna()]
 
     # Function to extract section values
     def extract_section(column):
