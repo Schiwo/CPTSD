@@ -1,22 +1,9 @@
 import openai
-import os
-import openpyxl
 import pandas as pd
-import numpy as np
-import re
 import argparse
-import json
 
 from openai import OpenAI
 from prompts.prompts_zeroshot import zeroshot_short_en_1
-from utils import extract_split_and_deduplicate_symptoms
-from utils import calculate_num_set
-from utils import calculate_and_average_metrics
-from utils import extract_sections
-from utils import tokenize_numbering
-from utils import mid_token_calc
-from utils import mid_token_dist_calc
-
 
 parser = argparse.ArgumentParser(
     description="Estimate Symptom and Section with Zero-shot Inference"
@@ -70,36 +57,3 @@ def zeroshot(df):
 # zero-shot inference
 data = pd.read_excel(f"{data_filename}.xlsx")
 zeroshot(data)
-
-# extract ground-truth symptoms and estimated symptoms
-gpt_result = pd.read_excel(f"{gpt_result_filename}.xlsx")
-extract_symp1 = extract_split_and_deduplicate_symptoms(
-    gpt_result, "Ground-truth label", "Symptom"
-)
-extract_symp2 = extract_split_and_deduplicate_symptoms(
-    extract_symp1, "Estimation", "Estimated Symptom"
-)
-
-# calcuate metrics used for multi-label classification in estimating symptoms
-num_set_extract_symp2 = calculate_num_set(extract_symp2)
-calculate_and_average_metrics(num_set_extract_symp2, zeroshot_metric_symp)
-
-# extract ground-truth sections and estimated sections
-extract_sec = extract_sections(gpt_result)
-
-# compute Jaccard Index for section prediction
-extract_sec = compute_section_jaccard(extract_sec)
-mean_jaccard = extract_sec["Jaccard Index"].mean()
-print(f"Mean Jaccard Index between sections: {mean_jaccard:.3f}")
-
-# save updated file with Jaccard column
-extract_sec.to_excel(f"{gpt_result_filename}_with_jaccard.xlsx", index=False)
-
-# tokenize the text of ground-truth sections and estimated sections and number tokens of the text
-tokenize_numbering(extract_sec, token_num_sec)
-
-# calculate the mid-token of the ground-truth sections and estimated sections
-mid_token_calc(token_num_sec, mid_token_calc_sec)
-
-# calculate the recall mid-token distance
-mid_token_dist_calc(mid_token_calc_sec, zeroshot_midtoken)
