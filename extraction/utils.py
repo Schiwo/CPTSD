@@ -1,7 +1,5 @@
 import pandas as pd
 import re
-# import numpy as np
-import json
 
 def calculate_metrics(filename):
     # Loading the Excel file
@@ -107,3 +105,4 @@ def calculate_metrics(filename):
 d = pd.read_excel("TP1results.xlsx")
     
 dNew = calculate_metrics("TP1results.xlsx")
+

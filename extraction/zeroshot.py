@@ -1,6 +1,8 @@
 import openai
+import os
 import openpyxl
 import pandas as pd
+import numpy as np
 import re
 import argparse
 import json
@@ -17,10 +19,12 @@ parser.add_argument(
 parser.add_argument("--apikey", help="Your openai api key", required=True)
 parser.add_argument("--result", help="Filename of result data", required=True)
 
+
 args = parser.parse_args()
 data_filename = args.data
 api_key = args.apikey
-result_filename = args.result
+gpt_result_filename = args.result
+
 
 
 def zeroshot(df):
