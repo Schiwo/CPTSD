@@ -1,7 +1,7 @@
 import openai
 import pandas as pd
 import argparse
-from extraction.prompts.prompts_icl import icl_short_en_1
+from prompts.prompts_icl import icl_short_en_1
 
 
 def create_icl_ex(df):
