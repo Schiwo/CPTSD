@@ -1,17 +1,6 @@
 import pandas as pd
 import re
-import argparse
 import json
-import numpy as np
-import ast
-from itertools import chain
-from ast import literal_eval
-import os
-import time
-import pandas as pd
-import re
-from itertools import chain
-from ast import literal_eval
 
 
 # zeroshot_symp
@@ -29,13 +18,10 @@ def extract_split_and_deduplicate_symptoms(df, source_column, target_column):
     # Iterate over each row in the dataframe
     for index, row in df.iterrows():
         # Parse the JSON-like string in the source column
-        try:
-            # TODO: fix the symptom parsing function for new format
+        if pd.isna(row[source_column]):
+            data = []
+        else:
             data = json.loads(row[source_column].replace("'", '"'))
-        except json.JSONDecodeError:
-            # In case of a decoding error, add a placeholder
-            extracted_symptoms.append(["Error in data"])
-            continue
 
         # Extract, split and deduplicate the symptoms
         symptoms = set()
@@ -66,13 +52,7 @@ def extract_symp_from_df_label(df, source_column, target_column):
     # Iterate over each row in the dataframe
     for index, row in df.iterrows():
         # Parse the JSON-like string in the source column
-        try:
-            data = json.loads(row[source_column].replace("'", '"'))
-        except json.JSONDecodeError:
-            # In case of a decoding error, add a placeholder
-            extracted_symptoms.append(["Error in data"])
-            continue
-
+        data = json.loads(row[source_column].replace("'", '"'))
         # Extract, split and deduplicate the symptoms
         symptoms = set()
         for item in data:
@@ -144,20 +124,15 @@ def extract_symp_from_df_icl(df, source_column, target_column):
             entry = "[" + entry + "]"
 
         # Find the first list of symptoms in the entry
-        try:
-            # Attempt to find the first list or single dictionary directly
-            first_list_start = entry.find('[{"symptom":')
-            if first_list_start != -1:
-                # Find the end of the list
-                list_end = entry.find("}]", first_list_start) + 2
-                data = json.loads(entry[first_list_start:list_end])
-            else:
-                # If no list or single dictionary is found, set data to an empty list
-                data = []
-        except json.JSONDecodeError:
-            # In case of a decoding error, add a placeholder
-            extracted_symptoms.append(["Error in data"])
-            continue
+        # Attempt to find the first list or single dictionary directly
+        first_list_start = entry.find('[{"symptom":')
+        if first_list_start != -1:
+            # Find the end of the list
+            list_end = entry.find("}]", first_list_start) + 2
+            data = json.loads(entry[first_list_start:list_end])
+        else:
+            # If no list or single dictionary is found, set data to an empty list
+            data = []
 
         # Extract, split, and deduplicate the symptoms
         symptoms = set()
@@ -186,8 +161,8 @@ def calculate_num_set(df1):
 
     def calculate_metrics(row):
         # The same function as before
-        symptoms = eval(row["Symptom"])
-        estimated_symptoms = eval(row["Estimated Symptom"])
+        symptoms = row["Symptom"]
+        estimated_symptoms = row["Estimated Symptom"]
         intersection = set(symptoms).intersection(set(estimated_symptoms))
         union = set(symptoms).union(set(estimated_symptoms))
         num_intersection = len(intersection)
@@ -220,10 +195,8 @@ def calculate_num_set(df1):
 
 
 # symp
-def calculate_and_average_metrics(input_file, output_file):
+def calculate_and_average_metrics(combined_df_count, output_file):
     # Combine the four DataFrames into one
-
-    combined_df_count = pd.read_excel(input_file)
 
     combined_df_count["accuracy"] = 1
     combined_df_count["precision"] = 1
@@ -232,8 +205,8 @@ def calculate_and_average_metrics(input_file, output_file):
 
     def calculate_metrics(row):
         # The same function as before
-        symptoms = eval(row["Symptom"])
-        estimated_symptoms = eval(row["Estimated Symptom"])
+        symptoms = row["Symptom"]
+        estimated_symptoms = row["Estimated Symptom"]
         num_intersection = int(row["num_intersection"])
         num_union = int(row["num_union"])
         num_symptoms = int(row["num_symptoms"])
@@ -288,7 +261,7 @@ def extract_sections(df):
     # Function to extract section values
     def extract_section(column):
         sections = []
-        # TODO: fix the section parsing function for new format
+        # TODO: why do we need eval here?
         for item in eval(column):
             # Add an empty string if 'section' is 'none', otherwise add the 'section' value
             if item.get("section", "") == "none":
@@ -341,9 +314,8 @@ def tokenize_numbering(df):
         max_existing_number = max(reference_tokens.values(), default=-1)
 
         for item in column:
-            item_list = literal_eval(item)
             tokenized_items = []
-            for text in item_list:
+            for text in item:
                 tokens = tokenize(text)
                 token_number_pairs = []
                 for token in tokens:
@@ -397,9 +369,7 @@ def mid_token_calc(df):
         This function first converts the string representation of the list of tuples into an actual list of tuples.
         """
         mid_tokens = []
-        for token_list_str in column:
-            # Convert the string representation to a list of tuples
-            token_list = ast.literal_eval(token_list_str)
+        for token_list in column:
             mid_tokens_list = []
             for sublist in token_list:
                 # Extract the numbers from the sublist
@@ -482,9 +452,7 @@ def mid_token_dist_calc(df):
         """
 
         def calculate_distance(row):
-            tokenized_statement = ast.literal_eval(
-                row["Tokenized Statement with Numbers"]
-            )
+            tokenized_statement = row["Tokenized Statement with Numbers"]
             closest_estimated_section = row["Closest Mid-Token Estimated Section"]
 
             # Check if 'Closest Mid-Token Estimated Section' is a list containing 'None'
@@ -512,12 +480,12 @@ def mid_token_dist_calc(df):
 
     # Add new columns for the closest mid-token and average differences
     df["Closest Mid-Token Estimated Section"] = find_closest_values(
-        df["Mid-Token Section"].apply(ast.literal_eval),
-        df["Mid-Token Estimated Section"].apply(ast.literal_eval),
+        df["Mid-Token Section"],
+        df["Mid-Token Estimated Section"],
     )
 
     df["Average Difference"] = find_avg_difference(
-        df["Mid-Token Section"].apply(ast.literal_eval),
+        df["Mid-Token Section"],
         df["Closest Mid-Token Estimated Section"],
     )
 

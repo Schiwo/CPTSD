@@ -19,7 +19,7 @@ from utils import (
 def compute_metrics_zeroshot(gpt_result_filename):
 
     # extract ground-truth symptoms and estimated symptoms
-    gpt_result = pd.read_excel(f"{gpt_result_filename}.xlsx")
+    gpt_result = pd.read_excel(gpt_result_filename)
     extract_symp1 = extract_split_and_deduplicate_symptoms(
         gpt_result, "Ground-truth label", "Symptom"
     )
@@ -64,7 +64,7 @@ def compute_metrics(gpt_result, extract_symp2, gpt_result_filename):
     # calculate metrics used for multi-label classification in estimating symptoms
     num_set_extract_symp2 = calculate_num_set(extract_symp2)
     calculate_and_average_metrics(
-        num_set_extract_symp2, f"{gpt_result_filename}_avg_metrics.xlsx"
+        num_set_extract_symp2, f"{gpt_result_filename[:-5]}_avg_metrics.xlsx"
     )
 
     # extract ground-truth sections and estimated sections
@@ -82,7 +82,7 @@ def compute_metrics(gpt_result, extract_symp2, gpt_result_filename):
     # calculate the recall mid-token distance
     midtoken = mid_token_dist_calc(mid_token_calc_sec)
 
-    midtoken.to_excel(f"{gpt_result_filename}_with_metrics.xlsx", index=False)
+    midtoken.to_excel(f"{gpt_result_filename[:-5]}_with_metrics.xlsx", index=False)
 
 
 if __name__ == "__main__":
