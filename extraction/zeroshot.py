@@ -1,9 +1,10 @@
 import openai
 import pandas as pd
 import argparse
+from tqdm import tqdm
 
 from openai import OpenAI
-from prompts.prompts_zeroshot import zeroshot_short_en_1
+from prompts.prompts_zeroshot import zeroshot_en_1
 
 
 def zeroshot(df):
@@ -15,12 +16,12 @@ def zeroshot(df):
         # Initialize the columns for estimated symptom and section
         df["Estimation"] = ""
 
-        for idx, row in df.iterrows():
+        for idx, row in tqdm(df.iterrows(), total=len(df)):
             try:
 
                 model = "gpt-4"
 
-                messages = zeroshot_short_en_1
+                messages = zeroshot_en_1
                 messages[-1]["content"] += row["Statement"]
 
                 response = client.chat.completions.create(

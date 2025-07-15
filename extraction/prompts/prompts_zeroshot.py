@@ -1,82 +1,48 @@
 # The following file contains zero-shoot prompts for finding bipolarity and depression symptoms.
 
-# Short is the original version from this repository, translated from corean to english and german.
+# Following prompts are an adaptation of prompts from this repository, translated from Corean to English and German.
+# Symptoms have been changed to Major depression episode and Bipolar disorder.
+# Sentences are simpler and more direct.
 
-zeroshot_short_en_1 = [
+# We do not use the original prompt from the paper, as the repository has been actualised after publication (most recent prompt).
+
+zeroshot_en_1 = [
     {
         "role": "system",
-        "content": "You will be given the following interview between a psychiatrist and a patient. If you think there are any psychiatrically significant symptoms in the following interview, please tell what they are and the sections that suggest them.\
-                    Please answer in the form [{'symptom': '...', 'section': '...'}, {'symptom': '...', 'section': '...'}, ...].\
-                    If you think there are multiple symptoms in a particular section, answer in the form [{'symptom': '..., ...', 'section': '...'}, ...].\
-                    If there are no psychiatrically significant symptoms and sections in a given interview, please answer [{'symptom': 'none', 'section': 'none'}].\
-                    I will give you the following 40 symptoms associated with Depression and Bipolarity:\
-                    For Major depression episode: Depressed mood Decreased interest,  Decreased appetite, Increased appetite, Insomnia, Hypersomnia, Psychomotor agitation, Psychomotor retardation, Fatigue, Worthlesness, Excessive guilt, Decreased concentration, Decreased decision, Suicide ideation, Suicide plan, Suicide attempt, Signficant distress, Social-occupational impairment, No medication, No pychotic disorder, No manic or hypomanic episode.\
-                    For Bipolar disorder: Expansive mood, Increased energy, Increased self-esteem, Decreased need for sleep, Increased talk, Increased ideas, Decreased concentration, Increase in goal-directed activity, Psychomotor agitation, Increased activities with high potential for painful consequences, No medication \
-                    Manic: Social-occupational impairment, Hospitalization, Psychotic features \
-                    Hypomanic: Change in functioning, Mood disturbance and change in functioning observable by others, No social-occupational impairment, No hospitalization, No psychotic features.\
-                    Be sure to answer with the symptoms named above and with the exact wording of the interview.",
+        "content": "You will be given an interview transcript between a psychiatrist and a patient. Your task is to identify any psychiatrically significant symptoms related to depression and bipolar disorder, based on DSM-5 criteria, and the sections that suggest them.\
+                    Please return your answer in the format: [{'symptom': '...', 'section': '...'}, {'symptom': '...', 'section': '...'}, ...].\
+                    If a section contains multiple syptoms, list them together: [{'symptom': '..., ...', 'section': '...'}, ...].\
+                    If there are no psychiatrically significant symptoms, respond with: [{'symptom': 'none', 'section': 'none'}].\
+                    Use only the following symptoms:\
+                    Major depression episode: Depressed mood, Loss of interest or pleasure, Appetite change (decrease or increase), Weight change (loss or gain), Insomnia, Hypersomnia, Psychomotor agitation, Psychomotor retardation, Fatigue or loss of energy, Worthlesness or excessive guilt, Difficulty concentrating or indecisiveness, Thoughts of death, Suicidal ideation, Suicide plan, Suicide attempt, Significant distress, Social or occupational impairment, Duration ≥2 weeks, Not better explained by a substance or medical condition, No psychotic features (mood-congruent or incongruent), No history of manic or hypomanic episode.\
+                    Manic and hypomanic symptoms: Expansive or elevated mood, Irritable mood, Increased activity or energy, Increased self-esteem or grandiosity, Decreased need for sleep, Increased talkativeness or pressured speech, Flight of ideas or racing thoughts, Distractibility, Increased goal-directed activity, Psychomotor agitation, Risky behaviour (e.g. spending, driving), Not better explained by a substance or medical condition (e.g. corticosteroids, antidepressant).\
+                    Manic episode (specifiers): Duration ≥1 week or any duration if hospitalization, Social or occupational impairment, Hospitalization, Psychotic features.\
+                    Hypomanic episode (specifiers): Duration ≥4 days, Change in functioning, Mood change observable by others, No social or occupational impairment, No hospitalization, No psychotic features.\
+                    Be sure to use only the symptoms named above and quote the exact wording of the interview that supports each symptom.",
     },
     {
         "role": "user",
-        "content": "If you think the following consultation has psychiatrically significant symptoms, please tell what they are and the sections in the text where you find these symptoms.",
+        "content": "Here is a transcript of a psychiatric consultation. Please extract any psychiatrically significant symptoms related to Depression and Bipolar Disorder and the sections they occur in.",
     },
 ]
 
-zeroshot_short_de_1 = [
+zeroshot_de_1 = [
     {
         "role": "system",
-        "content": "Ihnen wird das folgende Gespräch zwischen einem Psychiater und einem Patienten vorgelegt. Wenn Sie der Meinung sind, dass in dem folgenden Gespräch psychiatrisch bedeutsame Symptome vorkommen, geben Sie bitte an, um welche Symptome es sich handelt und welche Abschnitte darauf hindeuten.\
-                    Bitte beantworten Sie Symptome in der Form '- Symptoms : ...' und Abschnitte in der Form '- Sections : ...'.\
-                    Wenn es in einem bestimmten Interview keine psychiatrisch bedeutsamen Symptome gibt, antworten Sie bitte mit 'N/A'.\
-                    Ich gebe Ihnen 40 mögliche Symptome, die mit Depression und Bipolarität assoziiert sind:\
-                    Für eine schwere depressive Episode: Depressive Stimmung, Vermindertes Interesse, Verminderter Appetit, Gesteigerter Appetit, Schlaflosigkeit, Hypersomnie, Psychomotorische Unruhe, Psychomotorische Retardierung, Müdigkeit, Wertlosigkeit, Übermäßiges Schuldgefühl, Verminderte Konzentration, Verminderte Entscheidungsfähigkeit, Selbstmordgedanken, Selbstmordpläne, Selbstmordversuch, Signifikante Notlage, Sozial-berufliche Beeinträchtigung, Keine Medikamente, Keine pychotische Störung, Keine manische oder hypomanische Episode\
-                    Bei bipolarer Störung: Expansive Stimmung, Gesteigerte Energie, Gesteigertes Selbstwertgefühl, Vermindertes Schlafbedürfnis, Gesteigertes Reden, Gesteigerte Ideen, Verminderte Konzentration, Gesteigerte zielgerichtete Aktivität, Psychomotorische Unruhe, Gesteigerte Aktivitäten mit hohem Potenzial für schmerzhafte Konsequenzen, Keine Medikation \
-                    Manisch: Sozial-berufliche Beeinträchtigung, Krankenhausaufenthalt, Psychotische Merkmale \
-                    Hypomanisch: Veränderung der Funktionsweise, Von anderen beobachteter Veränderung der Funktionsweise, Keine sozial-berufliche Beeinträchtigung, Kein Krankenhausaufenthalt, Keine psychotischen Merkmale\
-                    Antworten Sie mit den oben bennanten Symptomen und mit dem genauen Wortlaut des Interviews.\
+        "content": "Du erhälst ein Transkript eines Interviews zwischen einem Psychiater und einem Patienten. Deine Aufgabe ist es, basierend auf DSM-5 Kriterien psychiatrisch relevante Symptome von Depression und bipolaren Störungen zu identifizieren, sowie die jeweiligen Abschnitte, die darauf hindeuten.\
+                    Bitte antworte im folgenden Format: [{'symptom': '...', 'section': '...'}, {'symptom': '...', 'section': '...'}, ...].\
+                    Wenn eine Textstelle mehrere Symptome enthält, verwende folgendes Format: [{'symptom': '..., ...', 'section': '...'}, ...].\
+                    Wenn keine psychiatrisch relevante Symptome im Interview enthalten sind, antworte mit: [{'symptom': 'none', 'section': 'none'}].\
+                    Verwende ausschließlich folgende Symptome:\
+                    Major depression episode: Depressed mood, Loss of interest or pleasure, Appetite change (decrease or increase), Weight change (loss or gain), Insomnia, Hypersomnia, Psychomotor agitation, Psychomotor retardation, Fatigue or loss of energy, Worthlesness or excessive guilt, Difficulty concentrating or indecisiveness, Thoughts of death, Suicidal ideation, Suicide plan, Suicide attempt, Significant distress, Social or occupational impairment, Duration ≥2 weeks, Not better explained by a substance or medical condition, No psychotic features (mood-congruent or incongruent), No history of manic or hypomanic episode.\
+                    Manic and hypomanic symptoms: Expansive or elevated mood, Irritable mood, Increased activity or energy, Increased self-esteem or grandiosity, Decreased need for sleep, Increased talkativeness or pressured speech, Flight of ideas or racing thoughts, Distractibility, Increased goal-directed activity, Psychomotor agitation, Risky behaviour (e.g. spending, driving), Not better explained by a substance or medical condition (e.g. corticosteroids, antidepressant).\
+                    Manic episode (specifiers): Duration ≥1 week or any duration if hospitalization, Social or occupational impairment, Hospitalization, Psychotic features.\
+                    Hypomanic episode (specifiers): Duration ≥4 days, Change in functioning, Mood change observable by others, No social or occupational impairment, No hospitalization, No psychotic features.\
+                    Verwende nur die oben genannten Symptome und zitiere den entsprechenden Text wörtlich aus dem Interview.\
                     ",
     },
     {
         "role": "user",
-        "content": "Wenn Sie der Meinung sind, dass die folgende Befragung psychiatrisch bedeutsame Symptome aufweist, geben Sie bitte an, um welche Symptome es sich handelt und in welchen Abschnitten des Textes Sie diese Symptome finden.",
-    },
-]
-
-# Long is the original prompt of the paper in english. It has also been translated into german.
-zeroshot_long_en_1 = [
-    {
-        "role": "system",
-        "content": "You will be given an interview. When answering the psychiatric symptoms associated with Bipolarity or Depression and the section that represents them, please be sure to answer in the form [{‘Symptom’: ‘...’, ‘Section’: ‘...’}, {‘Symptom’: ‘...’, ‘Section’: ‘...’}, ...].\
-                   If you think there are multiple symptoms in a particular section, you can answer in the form [{‘Symptom’: ‘..., ...’, ‘Section’: ‘...’}, ...].\
-                   If there are no psychiatric symptoms associated with Bipolarity and Depression in a given interview, please answer [{‘Symptom’: ‘none’, ‘Section’: ‘none’}].\
-                   I will give you following 40 symptoms associated with Depression and Bipolarity:\
-                   For Major depression episode: Depressed mood Decreased interest,  Decreased appetite, Increased appetite, Insomnia, Hypersomnia, Psychomotor agitation, Psychomotor retardation, Fatigue, Worthlesness, Excessive guilt, Decreased concentration, Decreased decision, Suicide ideation, Suicide plan, Suicide attempt, Signficant distress, Social-occupational impairment, No medication, No pychotic disorder, No manic or hypomanic episode.\
-                   For Bipolar disorder: Expansive mood, Increased energy, Increased self-esteem, Decreased need for sleep, Increased talk, Increased ideas, Decreased concentration, Increase in goal-directed activity, Psychomotor agitation, Increased activities with high potential for painful consequences, No medication \
-                   Manic: Social-occupational impairment, Hospitalization, Psychotic features \
-                   Hypomanic: Change in functioning, Mood disturbance and change in functioning observable by others, No social-occupational impairment, No hospitalization, No psychotic features.\
-                   Be sure to answer with the symptoms named above and with the exact wording of the interview.",
-    },
-    {
-        "role": "user",
-        "content": "Look at the following interview and if you think that there are psychiatric symptoms associated with Bipolarity and Depression in the interview, please tell me the symptom and the section that represents it",
-    },
-]
-
-zeroshot_long_de_1 = [
-    {
-        "role": "system",
-        "content": "Sie werden ein Interview erhalten. Achten Sie bei der Beantwortung der psychiatrischen Symptome im Zusammenhang mit Bipolarität oder Depression und dem entsprechenden Abschnitt darauf, in der Form [{'Symptom': '...', 'Section': '...'}, {'Symptom': '...', 'Section': '...'}, ...] zu antworten.\
-                   Wenn Sie der Meinung sind, dass es in einem bestimmten Abschnitt mehrere Symptome gibt, können Sie in der Form [{'Symptom': '..., ...', 'Section': '...'}, ...] antworten.\
-                   Wenn in einem bestimmten Interview keine psychiatrischen Symptome im Zusammenhang mit Bipolarität und Depression auftreten, antworten Sie bitte in der Form [{'Symptom': 'none', 'Section': 'none'}].\
-                   Ich gebe Ihnen 40 mögliche Symptome, die mit Depression und Bipolarität assoziiert sind:\
-                   Für eine schwere depressive Episode: Depressive Stimmung, Vermindertes Interesse, Verminderter Appetit, Gesteigerter Appetit, Schlaflosigkeit, Hypersomnie, Psychomotorische Unruhe, Psychomotorische Retardierung, Müdigkeit, Wertlosigkeit, Übermäßiges Schuldgefühl, Verminderte Konzentration, Verminderte Entscheidungsfähigkeit, Selbstmordgedanken, Selbstmordpläne, Selbstmordversuch, Signifikante Notlage, Sozial-berufliche Beeinträchtigung, Keine Medikamente, Keine pychotische Störung, Keine manische oder hypomanische Episode\
-                   Bei bipolarer Störung: Expansive Stimmung, Gesteigerte Energie, Gesteigertes Selbstwertgefühl, Vermindertes Schlafbedürfnis, Gesteigertes Reden, Gesteigerte Ideen, Verminderte Konzentration, Gesteigerte zielgerichtete Aktivität, Psychomotorische Unruhe, Gesteigerte Aktivitäten mit hohem Potenzial für schmerzhafte Konsequenzen, Keine Medikation \
-                   Manisch: Sozial-berufliche Beeinträchtigung, Krankenhausaufenthalt, Psychotische Merkmale \
-                   Hypomanisch: Veränderung der Funktionsweise, Von anderen beobachteter Veränderung der Funktionsweise, Keine sozial-berufliche Beeinträchtigung, Kein Krankenhausaufenthalt, Keine psychotischen Merkmale\
-                   Antworten Sie mit den oben bennanten Symptomen und mit dem genauen Wortlaut des Interviews.",
-    },
-    {
-        "role": "user",
-        "content": "Schauen Sie sich das folgende Interview an, und wenn Sie der Meinung sind, dass es psychiatrische Symptome gibt, die mit Bipolarität und Depression in Verbindung stehen, nennen Sie mir bitte das Symptom und den Abschnitt, der es darstellt",
+        "content": "Hier ist ein Transkript eines psychiatrischen Gesprächs. Bitte nenne alle psychiatrisch relevanten Symptome einer Depression und Bipolaren Störung und die dazugehörigen Textstellen.",
     },
 ]

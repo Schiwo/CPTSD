@@ -1,7 +1,7 @@
 import openai
 import pandas as pd
 import argparse
-from prompts.prompts_icl import icl_short_en_1
+from prompts.prompts_icl import icl_en_1
 
 
 def create_icl_ex(df):
@@ -40,7 +40,7 @@ def icl(df1, df2, api_key, gpt_result_filename):
         full_prompt += f"\n\nInput: {statement}"
 
         # Set up messages
-        messages = icl_short_en_1
+        messages = icl_en_1
         messages[-1]["content"] += full_prompt
 
         response = openai.ChatCompletion.create(model=model, messages=messages)
