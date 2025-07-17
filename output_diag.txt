@@ -1,0 +1,6 @@
+{'diagnosis_suggestion': 
+    {'diagnosis': 'MDD', 
+     'confidence': 95, 
+     'complexity': 2, 
+     'justification': 'The patient demonstrated more than five symptoms related to Major Depressive Disorder (Depressed mood, Loss of interest or pleasure, Fatigue, Hypersomnia, Feeling of worthlessness, Difficulty concentrating) consistently for over two weeks. The symptoms caused significant social-occupational impairment. The patient denied having manic or hypomanic episodes and does not use any medication that can cause the symptoms. No psychotic features were mentioned. Therefore, the condition cannot be better explained by Bipolar Disorder, drugs or medical condition.'}
+}
