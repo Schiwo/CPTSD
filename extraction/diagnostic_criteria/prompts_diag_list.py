@@ -7,27 +7,27 @@ diag_list_de = [
         Deine Aufgabe ist es:\
         1. Zu prüfen, ob die DSM-5-Diagnosekriterien für eine Major Depression (MDD) und/oder eine Bipolare Störung (BD) erfüllt sind.\
         2. Die erfüllten Kriterien aufzulisten\
-        Bitte gib deine Antwort im folgenden Format zurück:\
-        {'met diagnostic criteria': <code met>, <code met>, ...}\
+        Bitte gib deine Antwort im folgenden Format zurück: {'met diagnostic criteria': <code>, <code>, ...}\
+        Antworte nur mit dieser Liste und ohne weitere Erklärungen oder zusätzlichen Text. \
         Verwende ausschließlich die folgenden Diagnosekriterien:\
-        - A: Mindestens fünf Symptome, inkl. depressive Stimmung oder Interessen-/Freudeverlust, für mindestens 2 Wochen (siehe Symptome)\
-        - B: Deutliches Leiden oder soziale/berufliche Beeinträchtigung\
-        - C: Nicht besser erklärbar durch Substanzen oder eine medizinische Erkrankung\
-        - D: Keine psychotischen Merkmale\
-        - E: Keine Vorgeschichte einer manischen oder hypomanischen Episode\
+        - DepA: Mindestens fünf Symptome, inkl. depressive Stimmung oder Interessen-/Freudeverlust, für mindestens 2 Wochen (siehe Symptome)\
+        - DepB: Deutliches Leiden oder soziale/berufliche Beeinträchtigung\
+        - DepC: Nicht besser erklärbar durch Substanzen oder eine medizinische Erkrankung\
+        - DepD: Keine psychotischen Merkmale\
+        - DepE: Keine Vorgeschichte einer manischen oder hypomanischen Episode\
         Manische Episode:\
-        - A: Stimmungs- und Aktivitätsveränderung über ≥1 Woche oder jede Dauer bei Hospitalisierung (siehe Symptome)\
-        - B: Mindestens drei Symptome während einer Phase von Stimmungs- und Aktivitätsveränderung (siehe Symptome)\
-        - C: Soziale/berufliche Beeinträchtigung oder Hospitalisierung oder psychotische Merkmale\
-        - D: Nicht besser erklärbar durch Substanzen oder eine medizinische Erkrankung\
+        - ManA: Stimmungs- und Aktivitätsveränderung über ≥1 Woche oder jede Dauer bei Hospitalisierung (siehe Symptome)\
+        - ManB: Mindestens drei Symptome während einer Phase von Stimmungs- und Aktivitätsveränderung (siehe Symptome)\
+        - ManC: Soziale/berufliche Beeinträchtigung oder Hospitalisierung oder psychotische Merkmale\
+        - ManD: Nicht besser erklärbar durch Substanzen oder eine medizinische Erkrankung\
         Hypomanische Episode:\
-        - A: Stimmungs- und Aktivitätsveränderung über ≥4 Tage (siehe Symptome)\
-        - B: Mindestens drei Symptome während einer Phase von Stimmungs- und Aktivitätsveränderung (siehe Symptome)\
-        - C: Veränderung der Funktionsfähigkeit\
-        - D: Stimmungsveränderung ist für andere beobachtbar\
-        - E: Keine soziale/berufliche Beeinträchtigung, keine Hospitalisierung, keine psychotischen Merkmale\
-        - F: Nicht besser erklärbar durch Substanzen oder eine medizinische Erkrankung.\
-        Nuzte in deiner Antwort nur die Codes DepA, DepB, DepC, DepD, DepE, ManA, ManC, ManD, HypoA, HypoC, HypoD, HypoE, HypoF.",
+        - HypoA: Stimmungs- und Aktivitätsveränderung über ≥4 Tage (siehe Symptome)\
+        - HypoB: Mindestens drei Symptome während einer Phase von Stimmungs- und Aktivitätsveränderung (siehe Symptome)\
+        - HypoC: Veränderung der Funktionsfähigkeit\
+        - HypoD: Stimmungsveränderung ist für andere beobachtbar\
+        - HypoE: Keine soziale/berufliche Beeinträchtigung, keine Hospitalisierung, keine psychotischen Merkmale\
+        - HypoF: Nicht besser erklärbar durch Substanzen oder eine medizinische Erkrankung.\
+        Nutzte in deiner Antwort nur die Codes DepA, DepB, DepC, DepD, DepE, ManA, ManB, ManC, ManD, HypoA, HypoB, HypoC, HypoD, HypoE, HypoF.",
     },
     {
         "role": "user",

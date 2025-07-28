@@ -3,8 +3,8 @@ import pandas as pd
 import argparse
 from tqdm import tqdm
 
-from openai import OpenAI
-from prompts.prompts_zeroshot import zeroshot_en_1
+from openai import OpenAI, BadRequestError
+from prompts.prompts_zeroshot import zeroshot_de_1
 
 
 def zeroshot(df):
@@ -21,7 +21,7 @@ def zeroshot(df):
 
                 model = "gpt-4"
 
-                messages = zeroshot_en_1
+                messages = zeroshot_de_1
                 messages[-1]["content"] += row["Statement"]
 
                 response = client.chat.completions.create(
@@ -30,7 +30,7 @@ def zeroshot(df):
 
                 df.loc[idx, "Estimation"] = response.choices[0].message.content
 
-            except openai.error.InvalidRequestError:
+            except BadRequestError:
                 df.loc[idx, "Estimation"] = "Error"
 
         # Save the dataframe to a new excel file

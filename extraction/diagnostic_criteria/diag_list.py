@@ -49,10 +49,10 @@ def generate_diagnosis_from_statements_and_symptoms(df, api_key, output_filename
 
     model = "gpt-4"
     messages = [
-        {"role": "system", "content": "You are a psychiatrist assistant."},
+        diag_list_de[0],
         {
             "role": "user",
-            "content": f"Interview:\n{combined_statements}\n\nDetected Symptoms:\n{combined_symptoms}\n\nBitte nenne die erfüllten DSM-5 Kriterien für MDD und BD.",
+            "content": f"{diag_list_de[1]['content']}\n\nInterview:\n{combined_statements}\n\nDetected Symptoms:\n{combined_symptoms}",
         },
     ]
 
