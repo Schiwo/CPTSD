@@ -4,10 +4,19 @@ We are currently using this codebase as the foundation for our work on evaluatin
 
 Contributions (ongoing)
 The following changes and extensions have been made as part of our research:
-- Adapted the prompts for German-language transcripts
-- ...
+Overall changes:
+- Translated prompts for German-language transcripts (german version)
+- Adadpted prompts for other psychiatric diagnosis
+- Changed excel to dataframe
+Task 1:
+- Added jaccard index
+Task 2:
+- Added diagnostic criteria task
+Task 3:
+- Changed summarisation method based on previous tasks
+- Changed summarisation metrics to qualitative metrics
 
-All original credit remains with the authors of the initial implementation (see below for their full README).
+All original credit remains with the authors of the initial implementation (see below for their full Readme).
 
 --
 

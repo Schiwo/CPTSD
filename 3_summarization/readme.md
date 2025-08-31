@@ -18,7 +18,6 @@ Meaning of each arguments:<br>
 ```symp``` Extracted Symptom Data file with Excel format <br>
 ```apikey``` Your openai api key <br>
 ```gpt4summary``` Filename of GPT4 Summary <br>
-(```summary``` True Summary file <br>)
 ```
 python3 summarization_exp_symp.py --exp=exp --symp=symp --apikey=apikey --gpt4summary=gpt4summary --summary=summary
 ```

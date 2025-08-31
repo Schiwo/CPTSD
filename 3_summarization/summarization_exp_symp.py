@@ -54,7 +54,8 @@ def generate_summary(symptoms_text, criteria_text, api_key):
         Verdachtsdiagnose: <F-Code>, <Begründung>\
         Komplexität: <1-3>, <Begründung>\
         Sicherheit: <0-100 Prozent>, <Begründung>\
-        Bitte sei prägnant, klinisch und begründe deine Überlegungen. Wenn die Beweise unzureichend sind, gib dies an.\n\n"
+        Bitte sei prägnant, klinisch und begründe deine Überlegungen. Wenn die Beweise unzureichend sind, gib dies an.\
+        Wenn du subjektive biografische Elemente weitergibst, nutze den Konjunktiv oder Zitate, und interpretiere nicht.\n\n"
         f"Symptoms & Sections:\n{symptoms_text}\n\nDiagnostic Criteria:\n{criteria_text}"
     )
 

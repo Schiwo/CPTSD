@@ -2,6 +2,7 @@ import openai
 import pandas as pd
 import argparse
 from tqdm import tqdm
+from copy import deepcopy
 
 from openai import OpenAI, BadRequestError
 from prompts.prompts_zeroshot import zeroshot_de_1

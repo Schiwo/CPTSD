@@ -1,4 +1,4 @@
-# Most up-to-date diagnostic task (diagnostic.py for reference but not up-to-date)
+# Diagnostic (task 2)
 
 from openai import OpenAI, BadRequestError
 import pandas as pd
@@ -60,7 +60,10 @@ def generate_diagnosis_from_statements_and_symptoms(df, api_key, output_filename
         print("Step 4: Sending request to OpenAI")
         model = "gpt-4"
         response = client.chat.completions.create(
-            model=model, messages=messages, timeout=90
+            model=model,
+            messages=messages,
+            max_tokens=250,  # less than 150 words,
+            timeout=90,
         )
 
         result = response.choices[0].message.content.strip()
